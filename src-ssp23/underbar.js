@@ -159,19 +159,19 @@
   };
 
   // hrext02 answer
-  _.indexOf = function (array, target, isSorted) {
-    let result = -1;
-    let start = 0;
+  // _.indexOf = function (array, target, isSorted) {
+  //   let result = -1;
+  //   let start = 0;
 
-    if (typeof isSorted === 'number') start = isSorted;
+  //   if (typeof isSorted === 'number') start = isSorted;
 
-    for (let i = start; i < array.length; i++) {
-      if (array[i] === target && result === -1) {
-        return i;
-      }
-    }
-    return result;
-  };
+  //   for (let i = start; i < array.length; i++) {
+  //     if (array[i] === target && result === -1) {
+  //       return i;
+  //     }
+  //   }
+  //   return result;
+  // };
 
 
   // Return all elements of an array that pass a truth test.
@@ -194,18 +194,19 @@
     return filteredArr;
   };
 
-  //  The answer key Return all elements of an array that pass a truth test.
-  _.filter = function (collection, test) {
-    /* START SOLUTION */
-    var result = [];
+  // hrext02 answers
+  // //  The answer key Return all elements of an array that pass a truth test.
+  // _.filter = function (collection, test) {
+  //   /* START SOLUTION */
+  //   var result = [];
 
-    _.each(collection, function (val) {
-      test(val) && result.push(val);
-    });
+  //   _.each(collection, function (val) {
+  //     test(val) && result.push(val);
+  //   });
 
-    return result;
-    /* END SOLUTION */
-  };
+  //   return result;
+  //   /* END SOLUTION */
+  // };
 
   // Return all the elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
@@ -216,16 +217,16 @@
     })
   };
 
-// ANSWER KEY
-  _.reject = function (collection, test) {
-    // TIP: see if you can re-use _.filter() here, without simply
-    // copying code in and modifying it
-    /* START SOLUTION */
-    return _.filter(collection, function (val) {
-      return !test(val);
-    });
-    /* END SOLUTION */
-  };
+// hrext02 ANSWER KEY 
+  // _.reject = function (collection, test) {
+  //   // TIP: see if you can re-use _.filter() here, without simply
+  //   // copying code in and modifying it
+  //   /* START SOLUTION */
+  //   return _.filter(collection, function (val) {
+  //     return !test(val);
+  //   });
+  //   /* END SOLUTION */
+  // };
 
   // // imperatively (faster)
   // _.reject = function (collection, test) {
@@ -328,26 +329,26 @@
     }
   };
 
-// ANSWER KEY
-  // Produce a duplicate-free version of the array.
-  _.uniq = function (array, isSorted, iterator) {
-    /* START SOLUTION */
-    var hash = {};
+// // hrext02 ANSWER KEY (replicates behavior of underscore library when it encounters bad tests)
+//   // Produce a duplicate-free version of the array.
+//   _.uniq = function (array, isSorted, iterator) {
+//     /* START SOLUTION */
+//     var hash = {};
 
-    iterator = (isSorted && iterator) || _.identity;
+//     iterator = (isSorted && iterator) || _.identity;
 
-    _.each(array, function (val) {
-      var transformed = iterator(val);
-      if (hash[transformed] === undefined) {
-        hash[transformed] = val;
-      }
-    });
+//     _.each(array, function (val) {
+//       var transformed = iterator(val);
+//       if (hash[transformed] === undefined) {
+//         hash[transformed] = val;
+//       }
+//     });
 
-    return _.map(hash, function (value) {
-      return value;
-    });
-    /* END SOLUTION */
-  };
+//     return _.map(hash, function (value) {
+//       return value;
+//     });
+//     /* END SOLUTION */
+//   };
 
 
   // Return the results of applying an iterator to each element.
@@ -375,21 +376,21 @@
   //   return newArr;
   // };
 
-  // ANSWER KEY
-  _.map = function (collection, iterator) {
-    // map() is a useful primitive iteration function that works a lot
-    // like each(), but in addition to running the operation on all
-    // the members, it also maintains an array of results.
-    /* START SOLUTION */
-    var results = [];
+  // // hrext02 ANSWER KEY
+  // _.map = function (collection, iterator) {
+  //   // map() is a useful primitive iteration function that works a lot
+  //   // like each(), but in addition to running the operation on all
+  //   // the members, it also maintains an array of results.
+  //   /* START SOLUTION */
+  //   var results = [];
 
-    _.each(collection, function (item, index, collection) {
-      results.push(iterator(item, index, collection));
-    });
+  //   _.each(collection, function (item, index, collection) {
+  //     results.push(iterator(item, index, collection));
+  //   });
 
-    return results;
-    /* END SOLUTION */
-  };
+  //   return results;
+  //   /* END SOLUTION */
+  // };
 
 
   // Takes an array of objects and returns and array of the values of
@@ -439,6 +440,7 @@
       }
     }
     return result;
+  };
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
@@ -452,30 +454,20 @@
     }, false);
   };
 
-// hrext02 answer
-    // Determine if the array or object contains a given value (using `===`).
-    _.contains = function (collection, target) {
-      // TIP: Many iteration problems can be most easily expressed in
-      // terms of reduce(). Here's a freebie to demonstrate!
-      /* START SOLUTION */
-      collection = Object.values(collection);
-      return collection.includes(target);
-      /* END SOLUTION */
-    };
+// // hrext02 answer
+//     // Determine if the array or object contains a given value (using `===`).
+//     _.contains = function (collection, target) {
+//       // TIP: Many iteration problems can be most easily expressed in
+//       // terms of reduce(). Here's a freebie to demonstrate!
+//       /* START SOLUTION */
+//       collection = Object.values(collection);
+//       return collection.includes(target);
+//       /* END SOLUTION */
+//     };
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator = _.identity) {
     return _.reduce(collection, function (wereAllTrueSoFar, item) {
-      if (!iterator(item)) {
-       return false;
-      }
-      return wereAllTrueSoFar;
-    }, true);
-  };
-
-  // Determine whether all of the elements match a truth test.
-  _.every = function(collection, iterator = _.identity) {
-    return _.reduce(collection, (wereAllTrueSoFar, item) => {
       if (!iterator(item)) {
        return false;
       }
@@ -534,7 +526,7 @@
       }
     }
     return newObj;
-  }
+  };
 
   // // long form functional
   // _.extend = function(...args) {
@@ -621,20 +613,20 @@
   //   }, obj);
   // }
 
-    _.defaults = function (...obj) {
-      return _.reduce(arguments, (baseObj, addlObj) => {
-        for (let key in addlObj) {
-          baseObj[key] = baseObj[key] || addlObj[key]; // would work but for when fed falsy values
+  _.defaults = function (...obj) {
+    return _.reduce(arguments, (baseObj, addlObj) => {
+      for (let key in addlObj) {
+        baseObj[key] = baseObj[key] || addlObj[key]; // would work but for when fed falsy values
 
-          // // this logic protects against falsy trips
-          // if (!baseObj.hasOwnProperty(key)) {
-          //   baseObj[key] = addlObj[key];
-          // }
+        // // this logic protects against falsy trips
+        // if (!baseObj.hasOwnProperty(key)) {
+        //   baseObj[key] = addlObj[key];
+        // }
 
-        }
-        return baseObj;
-      }, obj[0]);
-    }
+      }
+      return baseObj;
+    }, obj[0]);
+  };
 
 
   /**
@@ -683,38 +675,38 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
 
-  // from Prof. Frisby - far simpler logic than underscore
-  _.memoize = (func) => {
-    const cache = {};
+  // // from Prof. Frisby - far simpler logic than underscore
+  // _.memoize = (func) => {
+  //   const cache = {};
 
+  //   return function closure(...args) {
+  //     const argStr = JSON.stringify(args);
+  //     cache[argStr] = cache[argStr] || func(...args);
+  //     return cache[argStr];
+  //   };
+  // };
+
+  _.memoize = function (func) {
+    /* START SOLUTION */
+    // create hash
+    let hashTable = {};
+    // convert address to hash
+
+    // create a safe space to store/power the hashTable
     return function closure(...args) {
-      const argStr = JSON.stringify(args);
-      cache[argStr] = cache[argStr] || func(...args);
-      return cache[argStr];
-    };
+      const address = JSON.stringify(args);
+      // check that has isn't already run
+      hashTable[address] = hashTable[address] || func(...args); // refactor of below logic
+      // // if it has ? then use that
+      //    if (!hashTable[address]) {
+      // // if it hasn't ? run the function and return that value and store it
+      //      hashTable[address] = func(...args);
+      // }
+      // pass it back out to the external fridge
+      return hashTable[address]
+    }
+    /* END SOLUTION */
   };
-
-    _.memoize = function (func) {
-      /* START SOLUTION */
-      // create hash
-      let hashTable = {};
-      // convert address to hash
-
-      // create a safe space to store/power the hashTable
-      return function closure(...args) {
-        const address = JSON.stringify(args);
-        // check that has isn't already run
-        hashTable[address] = hashTable[address] || func(...args); // refactor of below logic
-        // // if it has ? then use that
-        //    if (!hashTable[address]) {
-        // // if it hasn't ? run the function and return that value and store it
-        //      hashTable[address] = func(...args);
-        // }
-        // pass it back out to the external fridge
-        return hashTable[address]
-      }
-      /* END SOLUTION */
-    };
 
 // // from underscore slowly crossbred/fused with Dr. Frisby until it worked
 // // still somewhat unsure of the utility in all the underscore function wrapping
@@ -838,16 +830,27 @@
 
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
-  _.invoke = function(collection, functionOrKey, args) {
+  _.invoke = function (collection, functionOrKey, ...args) {
+    if (typeof functionOrKey === 'function') {
+      return _.map(collection, elem => functionOrKey.call(elem));
+    } else {
+      return _.map(collection, elem => elem[functionOrKey].call(elem));
+    }
   };
 
   // Sort the object's values by a criterion produced by an iterator.
   // If iterator is a string, sort objects by that property with the name
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
-  _.sortBy = function(collection, iterator) {
-  };
+  _.sortBy = function (collection, iterator) {
+    const termEval = elem => eval(`'${elem}'.${iterator}`)
 
+    if (typeof iterator === 'function') {
+      return collection.sort((a, b) => iterator(a) - iterator(b));
+    } else {
+      return collection.sort((a, b) => termEval(a) - termEval(b));
+    }
+  };
   // Zip together two or more arrays with elements of the same index
   // going together.
   //
@@ -1020,4 +1023,5 @@
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function(func, wait) {
   };
+
 }());
