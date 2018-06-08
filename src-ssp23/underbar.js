@@ -111,19 +111,19 @@
   //   }
   // };
 
-  // faster variant (also what is in underscore itself)
-  _.each = function(collection, iterator) {
-    if (Array.isArray(collection)) {
-      for (let i = 0; i < collection.length; i++) {
-        iterator(collection[i], i, collection);
-      }
-    } else {
-      let keyArr = Object.keys(collection);
-      for (let i = 0; i < keyArr.length; i++) {
-        iterator(collection[keyArr[i]], keyArr[i], collection);
-      }
-    }
-  };
+  // // faster variant (also what is in underscore itself)
+  // _.each = function(collection, iterator) {
+  //   if (Array.isArray(collection)) {
+  //     for (let i = 0; i < collection.length; i++) {
+  //       iterator(collection[i], i, collection);
+  //     }
+  //   } else {
+  //     let keyArr = Object.keys(collection);
+  //     for (let i = 0; i < keyArr.length; i++) {
+  //       iterator(collection[keyArr[i]], keyArr[i], collection);
+  //     }
+  //   }
+  // };
 
 // answer key
   _.each = function (collection, iterator) {
@@ -656,7 +656,7 @@
         // see here of for the apply(undefined, array) explanation
         // https://derickbailey.com/2015/11/16/kill-apply-with-the-spread-operator/
         // func(...args) === func.apply(this, arguments);
-          // the spread operator automatically scopes to this environment (apply needs specifications supplied) 
+        // the spread operator automatically scopes to this environment (apply needs specifications supplied);
         // result = func(...args);
         result = func.apply(this, arguments);
         alreadyCalled = true;
