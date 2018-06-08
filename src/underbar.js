@@ -94,6 +94,7 @@
   };
 
   // Produce a duplicate-free version of the array.
+  // dropping isSorted turbo in
   _.uniq = function(array, isSorted, iterator) {
     let arr = [];
     if (isSorted === true) {
@@ -104,7 +105,8 @@
     }
     return [...new Set(array)];
   };
-
+  
+  // basic approach
   _.uniq = function(array, isSorted, iterator) {
     let resultArr = [];
       _.each(array, (value) => {
@@ -112,6 +114,60 @@
       });
       return resultArr;
   };
+
+  // presented approach
+  _.uniq = function(array) {
+    var unique = {}, results = [];
+
+    for (var i = 0; i < array.length; i++) {
+      unique[array[i]] = array[i];
+    }
+
+    for (var key in unique) {
+      results.push(unique[key]);
+    }
+
+    return results;
+  }
+
+  // steppping thru basic ES6'like' hashtable approach 
+  _.uniq = function(array, isSorted, iterator) {
+    let hashtable = {};
+    // place each array value into an object
+    // NB: overwrites are happening on transcription - effectively deduping the dictionary
+    _.each(array, (value) => hashtable[value] = value)
+    // write the deduplicated dictionary down into an array.
+    return Object.values(hashtable);
+  };
+
+  // ES6ed basic approach (with isSorted turbo added)
+  _.uniq = function(array, isSorted, iterator) {
+    if (isSorted === true) {
+      return array.reduce((resultArr, value, i) => {
+        if (iterator(value) !== iterator(array[i - 1])) {
+          resultArr.push(value);
+        }
+        return resultArr;
+      }, []);
+    }
+    return Object.values(array.reduce((hashtable, value) => {
+      hashtable[value] = value;
+      return hashtable;
+    }, {}));
+  }
+
+  // current ES6 approach (with isSorted turbo added)
+  _.uniq = function (array, isSorted, iterator) {
+    if (isSorted === true) {
+      return array.reduce((resultArr, value, i) => {
+        if (iterator(value) !== iterator(array[i - 1])) {
+          resultArr.push(value);
+        }
+        return resultArr;
+      }, []);
+    }
+    return [...new Set(array)];
+  }
 
   // Return the results of applying an iterator to each element.
   _.map = function(collection, iterator) {
