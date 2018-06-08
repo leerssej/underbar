@@ -221,8 +221,34 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
+
+  // stock solution
   _.reduce = function(collection, iterator, accumulator) {
+    let initializing = arguments.length === 2;
+
+    _.each(collection, (value, i, collection) => {
+      if (initializing) {
+        accumulator = value;
+        initializing = false;
+      } else {
+        accumulator = iterator(accumulator, value, i, collection);
+      }
+    });
+
+    return accumulator;
   };
+
+  // reduce ES6 improved
+  _.reduce = function(collection, iterator, accumulator) {
+    // set accumulator if not set yet
+    if (arguments.length < 3) [accumulator, ...collection] = collection;
+    
+    _.each(collection, (value, i, collection) => {
+      accumulator = iterator(accumulator, value, i, collection)
+    })
+    
+    return accumulator;
+  }
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
