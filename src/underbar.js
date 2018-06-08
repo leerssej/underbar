@@ -262,16 +262,42 @@
     }, false);
   };
 
-
   // Determine whether all of the elements match a truth test.
+  // stock version
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    iterator = iterator || _.identity;
+    return !!_.reduce(collection, (trueSoFar, value, i, collection) => {
+        return trueSoFar && iterator(value);
+    }, true)
+  };
+  
+  // modified version
+  _.every = function(collection, iterator = _.identity) {
+      return _.reduce(collection, (trueSoFar, value, i, collection) => {
+            if(Boolean(iterator(value)) === false) {
+                trueSoFar = false;
+        }
+        return trueSoFar;
+    }, true)
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
+  // stock version
   _.some = function(collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
+    // TIP: Try re-using reduce() here.
+    iterator = iterator || _.identity;
+    return !!_.reduce(collection, (trueSoFar, value, i, collection) => {
+        return trueSoFar || iterator(value);
+    }, false)
+  };
+
+  // TIP: There's a very clever way to re-use every() here.
+  _.some = function(collection, iterator = _.identity) {
+    return !_.every(collection, (value, i, collection) => {
+      return !iterator(value, i, collection);
+    })
   };
 
 
