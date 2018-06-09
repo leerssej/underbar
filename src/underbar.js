@@ -453,8 +453,15 @@
     return function() {
       if (!alreadyCalled) {
         // TIP: .apply(this, arguments) is the standard way to pass on all of the
-        // infromation from one function call to another.
-        result = func.apply(this, arguments);
+        // information from one function call to another.
+        // result = func.apply(this, arguments);
+        
+        // see here of for the apply(undefined, array) explanation
+        // https://derickbailey.com/2015/11/16/kill-apply-with-the-spread-operator/
+        // func(...arguments) === func.apply(this, arguments);
+        // the spread operator automatically scopes to this environment (apply needs specifications supplied) 
+        
+        result = func(...arguments);
         alreadyCalled = true;
       }
       // The new function always returns the originally computed result.
@@ -470,7 +477,52 @@
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
+
+  // stock solution
   _.memoize = function(func) {
+    let results = {};
+
+    return function closure() {
+      let arg = JSON.stringify(arguments);
+
+      if (!results[arg]) {
+        results[arg] = func.apply(this, arguments);
+      }
+
+      return results[arg];
+    };
+  };
+
+  // halfway to ES6 + Prof Frisby influenced solution
+  _.memoize = function(func) {
+    let hashtable = {};
+
+    return function closure() {
+      // freeze the function and arguments supplied in a saveable format
+      let arg = JSON.stringify(arguments);
+      // check if saved or if not then save function into hashtable
+      if (!hashtable[arg]) {
+        hashtable[arg] = func(...arguments)
+      }
+      // push the now saved result out;
+      return hashtable[arg];
+    };
+
+  };
+
+  // ES6 + Prof Frisby influenced solution
+  _.memoize = function(func) {
+    let hashtable = {};
+
+    return function closure() {
+      // freeze the function and arguments supplied in a saveable format
+      let arg = JSON.stringify(arguments);
+      // check if saved or if not then save function into hashtable
+      hashtable[arg] = hashtable[arg] || func(...arguments)
+      // push the now saved result out;
+      return hashtable[arg];
+    };
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -480,6 +532,7 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+
   };
 
 
