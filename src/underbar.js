@@ -409,7 +409,7 @@
     return obj;
   };
 
-  // works but for when fed falsy values
+  // works BUT for when fed falsy values
   _.defaults = function (obj) {
     _.each(arguments, source => {
       for (let key in source) {
@@ -547,6 +547,7 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+
   };
 
 
@@ -560,7 +561,47 @@
 
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
+  // stock solution
   _.invoke = function(collection, functionOrKey, args) {
+    return _.map(collection, function(item) {
+      let method = typeof functionOrKey === 'string' ? item[functionOrKey] : functionOrKey;
+      return method.apply(item, args);
+    })
+  };
+
+  // Call approach
+  _.invoke = function (collection, functionOrKey, ...args) {
+    if (typeof functionOrKey === 'function') {
+      return _.map(collection, elem => functionOrKey.call(elem));
+    } else {
+      return _.map(collection, elem => elem[functionOrKey].call(elem));
+    }
+  };
+
+  // testing what call is all about
+  _.invoke = function(collection, functionOrKey, args) {
+    return _.map(collection, function(item) {
+      let method = typeof functionOrKey === 'function' ? functionOrKey : item[functionOrKey];
+      return method.call(item);
+    })
+  };
+
+  // making the links more direct
+  _.invoke = function(collection, functionOrKey, args) {
+    return _.map(collection, item =>
+      typeof functionOrKey === 'function' ?
+      functionOrKey.call(item) :
+      item[functionOrKey].call(item)
+    )
+  };
+  
+  // another angle for insight
+  _.invoke = function(collection, functionOrKey, args) {
+    return _.map(collection, item =>
+      typeof functionOrKey === 'string' ?
+        item[functionOrKey].call(item) :
+        functionOrKey.call(item)
+    )
   };
 
   // Sort the object's values by a criterion produced by an iterator.
