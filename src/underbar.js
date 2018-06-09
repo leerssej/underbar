@@ -319,14 +319,117 @@
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj) {
+
+  // // long form imperative
+  _.extend = function(...args) {
+    let newObj = {};
+    for (let i = 0; i < args.length; i++) {
+      let objToAdd = args[i];
+      for (let key in objToAdd) {
+        newObj[key] = objToAdd[key];
+      }
+    }
+    return newObj;
+  }
+
+  // short form imperative
+  _.extend = function (...args) {
+    let newObj = {};
+    for (let i = 0; i < args.length; i++) {
+      for (let key in args[i]) {
+        newObj[key] = args[i][key];
+      }
+    }
+    return newObj;
   };
 
+  // overburdened and shallow extends - left as warning
+  // steer clear of trying to use rest destructuring - unnecessary
+  // also don't bother checking old object with obj[key] = obj[key] || addlObj[key]
+  // extends is not asking for folks to check where there is a default value
+  _.extend = function(...obj) {
+    let [baseObj, ...restObjs] = obj;
+
+    _.each(restObjs, addlObj => {
+      for (let key in addlObj) {
+        baseObj[key] = addlObj[key];
+      }
+    })
+
+    return baseObj;
+  };
+
+  _.extend = function (obj) {
+    _.each(arguments, source => {
+      for (let key in source) {
+        // works but for when fed falsy values
+        obj[key] = source[key]; 
+      }
+    });
+    return obj;
+  };
+
+  // stock extends
+  _.extend = function(obj) {
+    _.each(arguments, function(source) {
+      _.each(source, function(value, key) {
+        obj[key] = value;
+      })
+    });
+    return obj;
+  };
+
+  // reduced extends
+  _.extend = function(...args) {
+    return _.reduce(args, (accObj, objectToAdd) => {
+      _.each(objectToAdd, (value, key) =>
+        accObj[key] = value)
+      return accObj;
+    }, {});
+  };
+
+  // ES6 object literal flatten
+  // (non-mutating so required calling deep equal vs equal on second test :-)
+  _.extend = function(obj) {
+    return _.reduce(arguments, (accObj, objToAdd) =>
+      ({...accObj, ...objToAdd}), {});
+  };
+  
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
+  // checking if 'they've already got one'
+
+  // stock solution
   _.defaults = function(obj) {
+    _.each(arguments, function(source) {
+      _.each(source, function(value, key) {
+        obj[key] === undefined && (obj[key] = value);
+      })
+    });
+    return obj;
   };
 
+  // works but for when fed falsy values
+  _.defaults = function (obj) {
+    _.each(arguments, source => {
+      for (let key in source) {
+        obj[key] = obj[key] || source[key]; 
+      }
+    });
+    return obj;
+  };
+
+  // this logic protects against falsy bumps
+  _.defaults = function (obj) {
+    _.each(arguments, (source) => {
+      for (let key in source) {        
+        if (!obj.hasOwnProperty(key)) {
+          obj[key] = source[key];
+        }
+      }
+    });
+    return obj;
+  };
 
   /**
    * FUNCTIONS
